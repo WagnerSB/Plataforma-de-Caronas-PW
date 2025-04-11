@@ -56,8 +56,7 @@ const getCaronaPorCodigoDB = async (codigo) => {
             c.vagas, c.vagas_ocupadas, c.status_carona, u.nome as nome_motorista
             FROM caronas c
 			JOIN usuarios u on c.codigo_motorista = u.codigo
-            WHERE c.codigo = $1
-            ORDER BY c.horario`, [codigo]);
+            WHERE c.codigo = $1`, [codigo]);
     if (results.rowCount == 0) {
         throw `Nenhuma carona encontrado com o código: ${codigo}`;
     } else {
