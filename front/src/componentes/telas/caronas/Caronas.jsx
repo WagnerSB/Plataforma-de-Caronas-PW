@@ -8,7 +8,7 @@ import Formulario from "./Formulario";
 const Caronas = () => {
     const nomeObjeto = 'carona'
 
-    const headers = ['Ações', 'Código', 'Codigo Motorista', 'Origem', 'Destino', 'Horário de Saída', 'Horário de Chegada', 'Vagas', 'Vagas Ocupadas', 'Status da Carona', 'Motorista'];
+    const headers = ['Ações', 'Código', 'Código Motorista', 'Origem', 'Destino', 'Horário de Saída', 'Horário de Chegada', 'Vagas', 'Vagas Ocupadas', 'Status da Carona', 'Motorista'];
     const objectHeaders = ['codigo', 'codigo_motorista', 'origem', 'destino', 'horario', 'horario_chegada', 'vagas', 'vagas_ocupadas', 'status_carona', 'nome_motorista'];
 
     const [alerta, setAlerta] = useState({ status: "", message: "" });
