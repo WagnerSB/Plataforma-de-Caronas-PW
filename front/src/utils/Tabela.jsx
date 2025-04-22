@@ -37,7 +37,7 @@ function Tabela({nomeContexto}) {
                                     </Button>
                             </td>
                             {objectHeaders.map((objHeader, index)=>(          
-                                <td key = {index}>{objeto[objHeader.toLowerCase()]}</td>
+                                <td style={{maxWidth: '500px', wordWrap: 'break-word'}} key = {index}>{objeto[objHeader.toLowerCase()]}</td>
                             ))}
                         </tr>
                     ))}
