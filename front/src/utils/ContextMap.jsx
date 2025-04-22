@@ -1,11 +1,11 @@
 
 import CaronaContext from '../componentes/telas/caronas/CaronaContext';
-// import UsuarioContext from '../componentes/telas/usuarios/UsuarioContext';
+import UsuarioContext from '../componentes/telas/usuarios/UsuarioContext';
 import AvaliacaoContext from '../componentes/telas/avaliacoes/AvaliacaoContext';
 
 const ContextMap = {
     CaronaContext: CaronaContext,
-    // UsuarioContext: UsuarioContext,
+    UsuarioContext: UsuarioContext,
     AvaliacaoContext: AvaliacaoContext
 };
 

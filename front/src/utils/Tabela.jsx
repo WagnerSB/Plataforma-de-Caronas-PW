@@ -11,7 +11,7 @@ function Tabela({nomeContexto}) {
 
     return (
         <div>
-            <Button variant="primary" onClick={() => novoObjeto()}>
+            <Button style={{marginBottom: '1rem'}} variant="primary" onClick={() => novoObjeto()}>
                 Novo Objeto <i className="bi bi-file-earmark-plus"></i>
             </Button>
             {listaObjetos.length <= 0 ? (<h1>Nenhum resultado encontrado</h1>):(
