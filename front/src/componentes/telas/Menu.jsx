@@ -24,7 +24,7 @@ function Menu() {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "90vh" }}>
+            <div className="d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "90vh" }}>
                     <Outlet/>
             </div>
         </div>
