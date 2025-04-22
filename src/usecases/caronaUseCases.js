@@ -11,7 +11,7 @@ const getCaronasDB = async () => {
 			JOIN usuarios u on c.codigo_motorista = u.codigo 
             ORDER BY c.horario`);
 
-        return rows.map((carona) => new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, 
+        return rows.map((carona) => new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino,
             carona.horario, carona.horario_chegada,
             carona.vagas, carona.vagas_ocupadas, carona.status_carona, carona.nome_motorista));
     } catch (err) {
@@ -22,12 +22,22 @@ const getCaronasDB = async () => {
 const addCaronaDB = async (body) => {
     try {
         const { codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona } = body;
+
+        const motorista = await pool.query(
+            `SELECT nome FROM usuarios WHERE codigo = $1 AND is_motorista = true`,
+            [codigo_motorista]
+        );
+
+        if (motorista.rowCount === 0) {
+            throw new Error(`Usuário ${codigo_motorista} não é um motorista válido.`);
+        }
+
         const results = await pool.query(`INSERT INTO caronas (codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-            RETURNING codigo, codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona`,
+            RETURNING codigo, codigo_motorista, origem, destino, to_char(horario, 'DD/MM/YYYY HH24:MI') as horario, to_char(horario_chegada, 'DD/MM/YYYY HH24:MI') as horario_chegada, vagas, vagas_ocupadas, status_carona`,
             [codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona]);
         const carona = results.rows[0];
-        return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario, carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona, "");
+        return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario, carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona, motorista.rows[0].nome || '');
     } catch (err) {
         throw `Erro ao adicionar carona: ${err}`;
     }
@@ -36,15 +46,25 @@ const addCaronaDB = async (body) => {
 const updateCaronaDB = async (body) => {
     try {
         const { codigo, codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona } = body;
+
+        const motorista = await pool.query(
+            `SELECT nome FROM usuarios WHERE codigo = $1 AND is_motorista = true`,
+            [codigo_motorista]
+        );
+
+        if (motorista.rowCount === 0) {
+            throw new Error(`Usuário ${codigo_motorista} não é um motorista válido.`);
+        }
+
         results = await pool.query(`UPDATE caronas SET codigo_motorista = $1, origem = $2, destino = $3, 
             horario = $4, horario_chegada = $5, vagas = $6, vagas_ocupadas = $7, status_carona = $8
             WHERE codigo = $9
-            RETURNING codigo, codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona`,
+            RETURNING codigo, codigo_motorista, origem, destino, to_char(horario, 'DD/MM/YYYY HH24:MI') as horario, to_char(horario_chegada, 'DD/MM/YYYY HH24:MI') as horario_chegada, vagas, vagas_ocupadas, status_carona`,
             [codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona, codigo]
         );
         const carona = results.rows[0];
-        return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario, 
-            carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona, "");
+        return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario,
+            carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona, motorista.rows[0].nome || '');
     } catch (err) {
         throw `Erro ao atualizar carona: ${err}`;
     }
@@ -61,8 +81,8 @@ const getCaronaPorCodigoDB = async (codigo) => {
         throw `Nenhuma carona encontrado com o código: ${codigo}`;
     } else {
         const carona = results.rows[0];
-        return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario, 
-            carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona, "");
+        return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario,
+            carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona, carona.nome_motorista);
     }
 }
 
