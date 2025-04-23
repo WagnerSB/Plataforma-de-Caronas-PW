@@ -4,7 +4,6 @@ import AvaliacaoContext from "./AvaliacaoContext";
 import Alerta from "../../../utils/Alerta";
 import CampoEntrada from "../../../utils/CampoEntrada";
 import Col from 'react-bootstrap/Col';
-import CampoSelect from "../../../utils/CampoSelect";
 
 
 function Formulario() {

@@ -4,12 +4,11 @@ import UsuarioContext from "./UsuarioContext";
 import Alerta from "../../../utils/Alerta";
 import CampoEntrada from "../../../utils/CampoEntrada";
 import Col from 'react-bootstrap/Col';
-import CampoSelect from "../../../utils/CampoSelect";
 import CampoCheckbox from "../../../utils/CampoCheckbox";
 
 
 function Formulario() {
-    const { objeto, cadastrarObjeto, handleChange, alerta, editar, exibirForm, setExibirForm } = useContext(UsuarioContext);
+    const { objeto, cadastrarObjeto, handleChange, alerta, exibirForm, setExibirForm } = useContext(UsuarioContext);
     
     return (
         <ModalDialogo id="modalEdicao" titulo="Usuário"
