@@ -8,8 +8,8 @@ import Formulario from "./Formulario";
 const Avaliacoes = () => {
     const nomeObjeto = 'avaliacao'
 
-    const headers = ['Ações', 'Código', 'Código Usuário', 'Código Carona', 'Nota', 'Comentário'];
-    const objectHeaders = ['codigo', 'codigo_usuario', 'codigo_carona', 'nota', 'comentario'];
+    const headers = ['Ações', 'Código', 'Código Usuário', 'Código Carona', 'Nota', 'Comentário', 'Nome do Usuário'];
+    const objectHeaders = ['codigo', 'codigo_usuario', 'codigo_carona', 'nota', 'comentario', 'nome_usuario'];
 
     const [alerta, setAlerta] = useState({ status: "", message: "" });
     const [listaObjetos, setListaObjetos] = useState([]);
@@ -31,7 +31,8 @@ const Avaliacoes = () => {
         'codigo_usuario': 0,
         'codigo_carona': 0,
         'nota': 1,
-        'comentario': ''
+        'comentario': '',
+        'nome_usuario': ''
     })
 
     const novoObjeto = () => {
@@ -42,7 +43,8 @@ const Avaliacoes = () => {
             'codigo_usuario': 0,
             'codigo_carona': 0,
             'nota': 1,
-            'comentario': ''
+            'comentario': '',
+            'nome_usuario': ''
         });
         setExibirForm(true);
     }

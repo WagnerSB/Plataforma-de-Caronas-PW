@@ -50,6 +50,13 @@ function Formulario() {
                     readonly={false}
                     maxCaracteres={200} />
             </Col>
+            <Col xs={12} md={12}>
+                <CampoEntrada value={objeto.nome_usuario}
+                    id="txtNomeUsuário" name="nome_usuario" label="Nome Usuário"
+                    tipo="text" onchange={handleChange}
+                    readonly={true}
+                    maxCaracteres={120} />
+            </Col>
 
 
         </ModalDialogo>
