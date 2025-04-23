@@ -29,6 +29,15 @@ const addUsuarioDB = async (body) => {
 const updateUsuarioDB = async (body) => {
     try {
         const { codigo, nome, telefone, email, is_motorista } = body;
+
+        if (is_motorista == false) {
+            const motoristaCheck = await pool.query(`SELECT 1 FROM caronas WHERE codigo_motorista = $1 LIMIT 1`, [codigo]);
+
+            if (motoristaCheck.rowCount > 0) 
+                throw new Error(`Não é possível remover o status de motorista. O usuário já foi motorista de uma carona.`);
+
+        }
+        
         results = await pool.query(`UPDATE usuarios SET nome = $1,
             telefone = $2, email = $3, is_motorista = $4
             WHERE codigo = $5
