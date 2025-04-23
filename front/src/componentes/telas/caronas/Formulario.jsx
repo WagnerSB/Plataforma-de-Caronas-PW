@@ -68,7 +68,7 @@ function Formulario() {
                 <CampoEntrada value={objeto.vagas_ocupadas}
                     id="txtVagasOcupadas" name="vagas_ocupadas" label="Vagas Ocupadas"
                     tipo="number" onchange={handleChange}
-                    readonly={false}
+                    readonly={true}
                     maxCaracteres={2} />
             </Col>
             <Col xs={12} md={6}>
