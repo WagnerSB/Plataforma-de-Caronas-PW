@@ -23,26 +23,12 @@ const addCaronaDB = async (body) => {
     try {
         const { codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona } = body;
 
-        const motorista = await pool.query(
-            `SELECT nome FROM usuarios WHERE codigo = $1 AND is_motorista = true`,
-            [codigo_motorista]
-        );
-
-        if (motorista.rowCount === 0) {
-            throw new Error(`Usuário ${codigo_motorista} não é um motorista válido.`);
-        }
-
-        // Validar a quantidade de vagas ocupadas com base nas reservas
-        const vagasOcupadas = await pool.query(
-            `SELECT COUNT(*) AS total FROM reservas WHERE codigo_carona = $1`,
-            [codigo]
-        );
-        const totalOcupadas = parseInt(vagasOcupadas.rows[0].total);
+        validarSeEhMotorista(codigo_motorista);
 
         const results = await pool.query(`INSERT INTO caronas (codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING codigo, codigo_motorista, origem, destino, to_char(horario, 'DD/MM/YYYY HH24:MI') as horario, to_char(horario_chegada, 'DD/MM/YYYY HH24:MI') as horario_chegada, vagas, vagas_ocupadas, status_carona`,
-            [codigo_motorista, origem, destino, horario, horario_chegada, vagas, totalOcupadas, status_carona]);
+            [codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona]);
         const carona = results.rows[0];
         return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario, carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona, motorista.rows[0].nome || '');
     } catch (err) {
@@ -54,14 +40,7 @@ const updateCaronaDB = async (body) => {
     try {
         const { codigo, codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona } = body;
 
-        const motorista = await pool.query(
-            `SELECT nome FROM usuarios WHERE codigo = $1 AND is_motorista = true`,
-            [codigo_motorista]
-        );
-
-        if (motorista.rowCount === 0) {
-            throw new Error(`Usuário ${codigo_motorista} não é um motorista válido.`);
-        }
+        validarSeEhMotorista(codigo_motorista);
 
         // Validar a quantidade de vagas ocupadas com base nas reservas
         const vagasOcupadas = await pool.query(
@@ -111,6 +90,17 @@ const deletarCaronaDB = async (codigo) => {
 
     } catch (err) {
         throw `Erro ao deletar carona: ${err}`
+    }
+}
+
+const validarSeEhMotorista = async (codigo_motorista) => {
+    const motorista = await pool.query(
+        `SELECT nome FROM usuarios WHERE codigo = $1 AND is_motorista = true`,
+        [codigo_motorista]
+    );
+
+    if (motorista.rowCount === 0) {
+        throw new Error(`Usuário ${codigo_motorista} não é um motorista válido.`);
     }
 }
 
