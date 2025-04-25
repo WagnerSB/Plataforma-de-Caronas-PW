@@ -16,6 +16,7 @@ const Reservas = () => {
     const [listaObjetos, setListaObjetos] = useState([]);
     const [editar, setEditar] = useState(false);
     const [exibirForm, setExibirForm] = useState(false);
+    const [usuarios, setUsuarios] = useState([{codigo: 0, nomeMotorista:''}]);
 
 
 
@@ -88,13 +89,23 @@ const Reservas = () => {
         recuperarReservas();
     }, []);
 
+    useEffect(() => {
+        const fetchUsuarios = async () => {
+            if (objeto?.codigo_carona) {
+                const resultado = await getObjetoPorCodigoAPI('usuariosDisponiveis', objeto.codigo_carona);
+                setUsuarios(resultado);
+              }
+          };
+        fetchUsuarios();
+    }, [objeto.codigo_carona]);
+
 
 
     return (
         <ReservaContext.Provider value={{
             alerta, headers, objectHeaders,
             listaObjetos, objeto, cadastrarObjeto, editar, editarObjeto,
-            handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm
+            handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm, usuarios
         }}>
             <h1>Reservas</h1>
             <Tabela nomeContexto="ReservaContext" />

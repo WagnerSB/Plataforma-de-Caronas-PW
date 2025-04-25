@@ -15,7 +15,7 @@ const Caronas = () => {
     const [listaObjetos, setListaObjetos] = useState([]);
     const [editar, setEditar] = useState(false);
     const [exibirForm, setExibirForm] = useState(false);
-    const [motoristas, setMotoristas] = useState([{'codigo': 0, 'nomeMotorista':''}]);
+    const [motoristas, setMotoristas] = useState([{codigo: 0, nomeMotorista:''}]);
 
     const formatDate = (date) => {
         const day = String(date.getDate()).padStart(2, '0');

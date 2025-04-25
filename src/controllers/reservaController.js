@@ -1,4 +1,4 @@
-const { getReservasDB, addReservaDB, updateReservaDB, getReservaPorCodigoDB, deletarReservaDB } = require('../usecases/reservaUseCases')
+const { getReservasDB, addReservaDB, updateReservaDB, getReservaPorCodigoDB, deletarReservaDB, getUsuariosDisponiveisDB } = require('../usecases/reservaUseCases')
 
 
 const getReservas = async (request, response) => {
@@ -64,4 +64,13 @@ const deletarReserva = async (request, response) => {
         );
 }
 
-module.exports = { getReservas, addReserva, updateReserva, getReservaPorCodigo, deletarReserva }
+const getUsuariosDisponiveis = async (request, response) => {
+    await getUsuariosDisponiveisDB (request.params.codigo_carona)
+        .then(data => response.status(200).json(data))
+        .catch(err => response.status(400).json({
+            status: 'error',
+            message: `Erro ao buscar usuários disponíveis: ${err}`
+        }))
+}
+
+module.exports = { getReservas, addReserva, updateReserva, getReservaPorCodigo, deletarReserva, getUsuariosDisponiveis }

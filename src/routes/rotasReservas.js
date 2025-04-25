@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getReservas, addReserva, updateReserva, getReservaPorCodigo, deletarReserva } = require('../controllers/reservaController')
+const { getReservas, addReserva, updateReserva, getReservaPorCodigo, deletarReserva, getUsuariosDisponiveis } = require('../controllers/reservaController')
 
 const rotasReservas = new Router();
 
@@ -8,8 +8,11 @@ rotasReservas.route('/reserva')
     .post(addReserva)
     .put(updateReserva);
 
-    rotasReservas.route('/reserva/:codigo')
+rotasReservas.route('/reserva/:codigo')
     .get(getReservaPorCodigo)
     .delete(deletarReserva);
+    
+rotasReservas.route('/usuariosDisponiveis/:codigo_carona')
+    .get(getUsuariosDisponiveis);
 
 module.exports = rotasReservas;

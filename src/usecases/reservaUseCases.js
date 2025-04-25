@@ -82,18 +82,44 @@ const deletarReservaDB = async (codigo) => {
         await atualizarVagasOcupadas(codigo_carona);
 
         return "Reserva deletada com sucesso"
-        
+
     } catch (err) {
         throw `Erro ao deletar reserva: ${err}`
     }
 }
+
+
+const getUsuariosDisponiveisDB = async (codigo_carona) => {
+    try {
+      const { rows } = await pool.query(`
+        SELECT u.codigo, u.nome
+        FROM usuarios u
+        WHERE u.codigo NOT IN (
+            SELECT r.codigo_usuario
+            FROM reservas r
+            WHERE r.codigo_carona = $1
+        )
+        AND u.codigo != (
+            SELECT c.codigo_motorista
+            FROM caronas c
+            WHERE c.codigo = $1
+        )
+        ORDER BY u.nome;
+      `, [codigo_carona]);
+  
+      return rows.map(usuario => ({ codigo: usuario.codigo, nome: usuario.nome }));
+    } catch (err) {
+      throw err;
+    }
+  };
+
 
 const validarReserva = async (codigo_carona, codigo_usuario, codigo_reserva = null) => {
     const carona = await pool.query(`SELECT codigo_motorista, vagas FROM caronas WHERE codigo = $1`, [codigo_carona]);
     if (carona.rowCount == 0)
         throw new Error('Carona não encontrada.');
 
-    const {codigo_motorista, vagas} = carona.rows[0];
+    const { codigo_motorista, vagas } = carona.rows[0];
 
     if (codigo_motorista == codigo_usuario)
         throw new Error('O motorista não pode fazer reserva na própria carona.');
@@ -111,7 +137,7 @@ const validarReserva = async (codigo_carona, codigo_usuario, codigo_reserva = nu
         );
 
         if (reservaExistente.rowCount > 0) {
-                reservasTotais -= 1;
+            reservasTotais -= 1;
         }
     }
 
@@ -123,8 +149,8 @@ const validarReserva = async (codigo_carona, codigo_usuario, codigo_reserva = nu
 const atualizarVagasOcupadas = async (codigo_carona) => {
     const result = await pool.query(`SELECT COUNT(*) AS total FROM reservas WHERE codigo_carona = $1`, [codigo_carona]);
     const total = parseInt(result.rows[0].total);
-    
+
     await pool.query(`UPDATE caronas SET vagas_ocupadas = $1 WHERE codigo = $2`, [total, codigo_carona]);
 };
 
-module.exports = { getReservasDB, addReservaDB, updateReservaDB, getReservaPorCodigoDB, deletarReservaDB };
+module.exports = { getReservasDB, addReservaDB, updateReservaDB, getReservaPorCodigoDB, deletarReservaDB, getUsuariosDisponiveisDB };
