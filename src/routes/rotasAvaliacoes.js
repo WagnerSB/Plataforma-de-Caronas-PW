@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAvaliacoes, addAvaliacao, updateAvaliacao, getAvaliacaoPorCodigo, deletarAvaliacao } = require('../controllers/avaliacaoController')
+const { getAvaliacoes, addAvaliacao, updateAvaliacao, getAvaliacaoPorCodigo, deletarAvaliacao, getUsuariosAvaliacao } = require('../controllers/avaliacaoController')
 
 const rotasAvaliacoes = new Router();
 
@@ -8,8 +8,11 @@ rotasAvaliacoes.route('/avaliacao')
     .post(addAvaliacao)
     .put(updateAvaliacao);
 
-    rotasAvaliacoes.route('/avaliacao/:codigo')
+rotasAvaliacoes.route('/avaliacao/:codigo')
     .get(getAvaliacaoPorCodigo)
     .delete(deletarAvaliacao);
+    
+rotasAvaliacoes.route('/usuariosAvaliacao/:codigo')
+    .get(getUsuariosAvaliacao);
 
 module.exports = rotasAvaliacoes;

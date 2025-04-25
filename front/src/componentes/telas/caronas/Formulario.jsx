@@ -86,14 +86,6 @@ function Formulario() {
                     <option value={'Cancelada'}>Cancelada</option>
                 </CampoSelect>
             </Col>
-            {/* <Col xs={12} md={12}>
-                <CampoEntrada value={objeto.nome_motorista}
-                    id="txtNomeMotorista" name="nome_motorista" label="Motorista"
-                    tipo="text" onchange={handleChange}
-                    readonly={true}
-                    maxCaracteres={120} />
-            </Col> */}
-
         </ModalDialogo>
     )
 

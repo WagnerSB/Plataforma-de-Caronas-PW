@@ -1,4 +1,4 @@
-const { getAvaliacoesDB, addAvaliacaoDB, updateAvaliacaoDB, getAvaliacaoPorCodigoDB, deletarAvaliacaoDB } = require('../usecases/avaliacaoUseCases')
+const { getAvaliacoesDB, addAvaliacaoDB, updateAvaliacaoDB, getAvaliacaoPorCodigoDB, deletarAvaliacaoDB, getUsuariosAvaliacaoDB } = require('../usecases/avaliacaoUseCases')
 
 
 const getAvaliacoes = async (request, response) => {
@@ -64,4 +64,15 @@ const deletarAvaliacao = async (request, response) => {
         );
 }
 
-module.exports = { getAvaliacoes, addAvaliacao, updateAvaliacao, getAvaliacaoPorCodigo, deletarAvaliacao }
+const getUsuariosAvaliacao = async (request, response) => {
+    await getUsuariosAvaliacaoDB(request.params.codigo)
+        .then(data => response.status(200).json(data))
+        .catch(err =>
+            response.status(400).json({
+                status: 'error',
+                message: `Erro ao buscar usuários avaliação: ${err}`
+            })
+        )
+}
+
+module.exports = { getAvaliacoes, addAvaliacao, updateAvaliacao, getAvaliacaoPorCodigo, deletarAvaliacao, getUsuariosAvaliacao }

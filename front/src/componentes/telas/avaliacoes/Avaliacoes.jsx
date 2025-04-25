@@ -15,6 +15,8 @@ const Avaliacoes = () => {
     const [listaObjetos, setListaObjetos] = useState([]);
     const [editar, setEditar] = useState(false);
     const [exibirForm, setExibirForm] = useState(false);
+    const [caronas, setCaronas] = useState([{ codigo: 0 }]);
+    const [usuarios, setUsuarios] = useState([{ codigo: 0, nome: '' }])
 
     const [objeto, setObjeto] = useState({
         'codigo': 0,
@@ -41,6 +43,13 @@ const Avaliacoes = () => {
 
     const recuperarAvaliacoes = async () => {
         setListaObjetos(await getObjetosAPI(nomeObjeto));
+    };
+
+    const recuperarCaronas = async () => {
+        const resultado = await getObjetosAPI('carona');
+        const codigos = resultado.map(carona => ({ codigo: carona.codigo }))
+            .sort((a, b) => a.codigo - b.codigo);
+        setCaronas(codigos);
     };
 
     const editarObjeto = async (codigo) => {
@@ -85,7 +94,18 @@ const Avaliacoes = () => {
 
     useEffect(() => {
         recuperarAvaliacoes();
+        recuperarCaronas();
     }, []);
+
+    useEffect(() => {
+        const fetchUsuarios = async () => {
+            if (objeto?.codigo_carona) {
+                const resultado = await getObjetoPorCodigoAPI('usuariosAvaliacao', objeto.codigo_carona);
+                setUsuarios(resultado);
+            }
+        };
+        fetchUsuarios();
+    }, [objeto]);
 
 
 
@@ -93,7 +113,8 @@ const Avaliacoes = () => {
         <AvaliacaoContext.Provider value={{
             alerta, headers, objectHeaders,
             listaObjetos, objeto, cadastrarObjeto, editar, editarObjeto,
-            handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm
+            handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm,
+            usuarios, caronas
         }}>
             <h1>Avaliações</h1>
             <Tabela nomeContexto="AvaliacaoContext" />

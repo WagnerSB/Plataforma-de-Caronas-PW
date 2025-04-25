@@ -70,4 +70,14 @@ const deletarAvaliacaoDB = async (codigo) => {
     }
 }
 
-module.exports = { getAvaliacoesDB, addAvaliacaoDB, updateAvaliacaoDB, getAvaliacaoPorCodigoDB, deletarAvaliacaoDB };
+const getUsuariosAvaliacaoDB = async (codigo_carona) => {
+    const results = await pool.query(`SELECT r.codigo_usuario, u.nome
+            FROM reservas r
+            JOIN usuarios u ON r.codigo_usuario = u.codigo
+            WHERE r.codigo_carona = $1`,
+        [codigo_carona]);
+
+    return results.rows.map(row => ({ codigo: row.codigo_usuario, nome: row.nome }));
+}
+
+module.exports = { getAvaliacoesDB, addAvaliacaoDB, updateAvaliacaoDB, getAvaliacaoPorCodigoDB, deletarAvaliacaoDB, getUsuariosAvaliacaoDB };
