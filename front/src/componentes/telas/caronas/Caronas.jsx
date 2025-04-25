@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Tabela from "../../../utils/Tabela";
 import CaronaContext from "./CaronaContext";
-
 import { getObjetosAPI, getObjetoPorCodigoAPI, adicionarObjetoAPI, deletarObjetoAPI } from '../../../servicos/BasicoServicos'
 import Formulario from "./Formulario";
+import Alerta from "../../../utils/Alerta";
 
 const Caronas = () => {
     const nomeObjeto = 'carona'
@@ -116,6 +116,7 @@ const Caronas = () => {
             handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm, motoristas
         }}>
             <h1>Caronas</h1>
+            <Alerta alerta={alerta} />
             <Tabela nomeContexto="CaronaContext" />
             <Formulario />
         </CaronaContext.Provider>
