@@ -97,7 +97,7 @@ const Reservas = () => {
               }
           };
         fetchUsuarios();
-    }, [objeto.codigo_carona]);
+    }, [objeto]);
 
 
 

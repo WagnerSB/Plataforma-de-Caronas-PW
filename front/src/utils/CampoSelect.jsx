@@ -9,7 +9,7 @@ function CampoSelect(props) {
                 name={props.name} onChange={props.onchange}
                 disabled = {props.readOnly}
                 >
-                <option disabled="true" value="">({props.msginvalido})</option>
+                <option value="">({props.msginvalido})</option>
                 {props.children}
             </Form.Select>
             <Form.Control.Feedback>{props.msgvalido}</Form.Control.Feedback>
