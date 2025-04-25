@@ -16,16 +16,17 @@ const Reservas = () => {
     const [listaObjetos, setListaObjetos] = useState([]);
     const [editar, setEditar] = useState(false);
     const [exibirForm, setExibirForm] = useState(false);
-    const [usuarios, setUsuarios] = useState([{codigo: 0, nomeMotorista:''}]);
+    const [usuarios, setUsuarios] = useState([{ codigo: 0, nomeMotorista: '' }]);
+    const [caronas, setCaronas] = useState([{ codigo: 0 }]);
 
 
 
     const [objeto, setObjeto] = useState({
         'codigo': 0,
-            'codigo_carona': 0,
-            'codigo_usuario': 0,
-            'nome_passageiro': '',
-            'nome_motorista': ''
+        'codigo_carona': 0,
+        'codigo_usuario': 0,
+        'nome_passageiro': '',
+        'nome_motorista': ''
     })
 
     const novoObjeto = () => {
@@ -43,6 +44,13 @@ const Reservas = () => {
 
     const recuperarReservas = async () => {
         setListaObjetos(await getObjetosAPI(nomeObjeto));
+    };
+
+    const recuperarCaronas = async () => {
+        const resultado = await getObjetosAPI('carona');
+        const codigos = resultado.map(carona => ({ codigo: carona.codigo }))
+            .sort((a, b) => a.codigo - b.codigo);
+        setCaronas(codigos);
     };
 
     const editarObjeto = async (codigo) => {
@@ -87,6 +95,7 @@ const Reservas = () => {
 
     useEffect(() => {
         recuperarReservas();
+        recuperarCaronas();
     }, []);
 
     useEffect(() => {
@@ -94,8 +103,8 @@ const Reservas = () => {
             if (objeto?.codigo_carona) {
                 const resultado = await getObjetoPorCodigoAPI('usuariosDisponiveis', objeto.codigo_carona);
                 setUsuarios(resultado);
-              }
-          };
+            }
+        };
         fetchUsuarios();
     }, [objeto]);
 
@@ -105,7 +114,7 @@ const Reservas = () => {
         <ReservaContext.Provider value={{
             alerta, headers, objectHeaders,
             listaObjetos, objeto, cadastrarObjeto, editar, editarObjeto,
-            handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm, usuarios
+            handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm, usuarios, caronas
         }}>
             <h1>Reservas</h1>
             <Tabela nomeContexto="ReservaContext" />
