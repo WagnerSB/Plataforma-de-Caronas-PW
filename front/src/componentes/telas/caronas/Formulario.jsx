@@ -8,8 +8,7 @@ import CampoSelect from "../../../utils/CampoSelect";
 
 
 function Formulario() {
-    const { objeto, cadastrarObjeto, handleChange, alerta, editar, exibirForm, setExibirForm } = useContext(CaronaContext);
-
+    const { objeto, cadastrarObjeto, handleChange, alerta, editar, exibirForm, setExibirForm, motoristas } = useContext(CaronaContext);
     return (
         <ModalDialogo id="modalEdicao" titulo="Carona"
             idform="formulario" cadastrarObjeto={cadastrarObjeto}
@@ -23,11 +22,15 @@ function Formulario() {
                     maxCaracteres={5} />
             </Col>
             <Col xs={12} md={6}>
-                <CampoEntrada value={objeto.codigo_motorista}
-                    id="txtCodigoMotorista" name="codigo_motorista" label="Código Motorista"
-                    tipo="number" onchange={handleChange}
-                    readonly={editar ? true : false}
-                    maxCaracteres={7} />
+                <CampoSelect value={objeto.codigo_motorista}
+                    id="txtCodigoMotorista" name="codigo_motorista" label="Motorista"
+                    onchange={handleChange} readOnly={editar ? true : false}
+                    msgvalido="Certo" msginvalido="Informe o motorista"
+                    requerido={true}>
+                    {motoristas.map(motorista => (
+                        <option key={motorista.codigo} value={motorista.codigo}>{motorista.nomeMotorista}</option>
+                    ))}
+                </CampoSelect>
             </Col>
             <Col xs={12} md={12}>
                 <CampoEntrada value={objeto.origem}
@@ -83,14 +86,14 @@ function Formulario() {
                     <option value={'Cancelada'}>Cancelada</option>
                 </CampoSelect>
             </Col>
-            <Col xs={12} md={12}>
+            {/* <Col xs={12} md={12}>
                 <CampoEntrada value={objeto.nome_motorista}
                     id="txtNomeMotorista" name="nome_motorista" label="Motorista"
                     tipo="text" onchange={handleChange}
                     readonly={true}
                     maxCaracteres={120} />
-            </Col>
-            
+            </Col> */}
+
         </ModalDialogo>
     )
 

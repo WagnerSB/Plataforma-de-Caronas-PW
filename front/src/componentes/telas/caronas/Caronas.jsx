@@ -15,6 +15,7 @@ const Caronas = () => {
     const [listaObjetos, setListaObjetos] = useState([]);
     const [editar, setEditar] = useState(false);
     const [exibirForm, setExibirForm] = useState(false);
+    const [motoristas, setMotoristas] = useState([{'codigo': 0, 'nomeMotorista':''}]);
 
     const formatDate = (date) => {
         const day = String(date.getDate()).padStart(2, '0');
@@ -58,6 +59,7 @@ const Caronas = () => {
     }
 
     const recuperarCaronas = async () => {
+        setMotoristas(await getObjetosAPI('motoristas'));
         setListaObjetos(await getObjetosAPI(nomeObjeto));
     };
 
@@ -111,7 +113,7 @@ const Caronas = () => {
         <CaronaContext.Provider value={{
             alerta, headers, objectHeaders,
             listaObjetos, objeto, cadastrarObjeto, editar, editarObjeto,
-            handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm
+            handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm, motoristas
         }}>
             <h1>Caronas</h1>
             <Tabela nomeContexto="CaronaContext" />

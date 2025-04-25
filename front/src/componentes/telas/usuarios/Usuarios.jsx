@@ -56,7 +56,6 @@ const Usuarios = () => {
     const deletarObjeto = async (codigo) => {
         if (window.confirm('Deseja remover este objeto?')) {
             const apiResult = await deletarObjetoAPI(nomeObjeto, codigo);
-            console.dir(apiResult)
             setAlerta({ status: apiResult.status, message: apiResult.message });
             recuperarUsuarios();
         }

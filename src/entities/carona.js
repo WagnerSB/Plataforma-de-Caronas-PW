@@ -1,5 +1,5 @@
 class Carona {
-    constructor (codigo, codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona, nome_motorista){
+    constructor (codigo, codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona, nome_motorista = ''){
         this.codigo = codigo;
         this.codigo_motorista = codigo_motorista;
         this.origem = origem;

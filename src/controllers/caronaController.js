@@ -1,4 +1,4 @@
-const { getCaronasDB, addCaronaDB, updateCaronaDB, getCaronaPorCodigoDB, deletarCaronaDB } = require('../usecases/caronaUseCases')
+const { getCaronasDB, addCaronaDB, updateCaronaDB, getCaronaPorCodigoDB, deletarCaronaDB, getMotoristasDB } = require('../usecases/caronaUseCases')
 
 
 const getCaronas = async (request, response) => {
@@ -64,4 +64,13 @@ const deletarCarona = async (request, response) => {
         );
 }
 
-module.exports = { getCaronas, addCarona, updateCarona, getCaronaPorCodigo, deletarCarona }
+
+const getMotoristas = async (request, response) => {
+    await getMotoristasDB()
+    .then(data => response.status(200).json(data))
+        .catch(err => response.status(400).json({
+            status: 'error',
+            message: `Erro ao buscar motoristas: ${err}`
+        }))
+}
+module.exports = { getCaronas, addCarona, updateCarona, getCaronaPorCodigo, deletarCarona, getMotoristas }

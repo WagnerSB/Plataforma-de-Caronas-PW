@@ -6,8 +6,10 @@ function CampoSelect(props) {
         <FloatingLabel controlId={props.id} label={props.label} className="mb-3">
             <Form.Select
                 value={props.value} required={props.requerido}
-                name={props.name} onChange={props.onchange}>
-                <option disable="true" value="">({props.msginvalido})</option>
+                name={props.name} onChange={props.onchange}
+                disabled = {props.readOnly}
+                >
+                <option disabled="true" value="">({props.msginvalido})</option>
                 {props.children}
             </Form.Select>
             <Form.Control.Feedback>{props.msgvalido}</Form.Control.Feedback>

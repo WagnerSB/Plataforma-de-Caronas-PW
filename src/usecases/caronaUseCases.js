@@ -22,7 +22,6 @@ const getCaronasDB = async () => {
 const addCaronaDB = async (body) => {
     try {
         const { codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona } = body;
-
         validarSeEhMotorista(codigo_motorista);
 
         const results = await pool.query(`INSERT INTO caronas (codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona) 
@@ -30,7 +29,7 @@ const addCaronaDB = async (body) => {
             RETURNING codigo, codigo_motorista, origem, destino, to_char(horario, 'DD/MM/YYYY HH24:MI') as horario, to_char(horario_chegada, 'DD/MM/YYYY HH24:MI') as horario_chegada, vagas, vagas_ocupadas, status_carona`,
             [codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona]);
         const carona = results.rows[0];
-        return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario, carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona, motorista.rows[0].nome || '');
+        return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario, carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona);
     } catch (err) {
         throw `Erro ao adicionar carona: ${err}`;
     }
@@ -57,7 +56,7 @@ const updateCaronaDB = async (body) => {
         );
         const carona = results.rows[0];
         return new Carona(carona.codigo, carona.codigo_motorista, carona.origem, carona.destino, carona.horario,
-            carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona, motorista.rows[0].nome || '');
+            carona.horario_chegada, carona.vagas, carona.vagas_ocupadas, carona.status_carona);
     } catch (err) {
         throw `Erro ao atualizar carona: ${err}`;
     }
@@ -93,6 +92,18 @@ const deletarCaronaDB = async (codigo) => {
     }
 }
 
+const getMotoristasDB = async () => {
+    try {
+        const { rows } = await pool.query(`SELECT m.codigo, m.nome, m.is_motorista
+            FROM usuarios m WHERE m.is_motorista = true
+            ORDER BY m.codigo`);
+
+        return rows.map((motorista) => ({'codigo': motorista.codigo, 'nomeMotorista': motorista.nome}));
+    } catch (err) {
+        throw err;
+    };
+}
+
 const validarSeEhMotorista = async (codigo_motorista) => {
     const motorista = await pool.query(
         `SELECT nome FROM usuarios WHERE codigo = $1 AND is_motorista = true`,
@@ -104,4 +115,4 @@ const validarSeEhMotorista = async (codigo_motorista) => {
     }
 }
 
-module.exports = { getCaronasDB, addCaronaDB, updateCaronaDB, getCaronaPorCodigoDB, deletarCaronaDB };
+module.exports = { getCaronasDB, addCaronaDB, updateCaronaDB, getCaronaPorCodigoDB, deletarCaronaDB, getMotoristasDB };
