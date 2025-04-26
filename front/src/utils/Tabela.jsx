@@ -15,6 +15,7 @@ function Tabela({ nomeContexto }) {
                 Novo Objeto <i className="bi bi-file-earmark-plus"></i>
             </Button>
             {listaObjetos.length <= 0 ? (<h1>Nenhum resultado encontrado</h1>) : (
+                <div style={{ width: window.innerWidth <= 768 && '100vw'}}>
                 <Table striped bordered responsive>
                     <thead>
                         <tr>
@@ -45,6 +46,7 @@ function Tabela({ nomeContexto }) {
                         ))}
                     </tbody>
                 </Table>
+                </div>
             )}
         </div>
     )

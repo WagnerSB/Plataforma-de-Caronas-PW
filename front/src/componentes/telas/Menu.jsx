@@ -6,7 +6,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 function Menu() {
     return (
-        <div>
+        <div style={{width:'100%'}}>
             <Navbar expand="lg" className="bg-body-tertiary">
                 <Container>
                     <NavLink className="navbar-brand" aria-current="page" exact="true" to="/">Caronas</NavLink>
