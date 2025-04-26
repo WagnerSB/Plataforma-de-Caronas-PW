@@ -5,6 +5,7 @@ import UsuarioContext from './UsuarioContext'
 import { getObjetosAPI, getObjetoPorCodigoAPI, adicionarObjetoAPI, deletarObjetoAPI } from '../../../servicos/BasicoServicos'
 import Formulario from "./Formulario";
 import Alerta from "../../../utils/Alerta";
+import Carregando from "../../../utils/Carregando"
 
 const Usuarios = () => {
     const nomeObjeto = 'usuario'
@@ -16,6 +17,7 @@ const Usuarios = () => {
     const [listaObjetos, setListaObjetos] = useState([]);
     const [editar, setEditar] = useState(false);
     const [exibirForm, setExibirForm] = useState(false);
+    const [carregando, setCarregando] = useState(false);
 
     const [objeto, setObjeto] = useState({
         'codigo': 0,
@@ -39,11 +41,13 @@ const Usuarios = () => {
     }
 
     const recuperarUsuarios = async () => {
+        setCarregando(true);
         let apiResponse = await getObjetosAPI(nomeObjeto);
         apiResponse.forEach(obj => {
             obj.is_motorista = obj.is_motorista ? 'Sim' : 'Não';
         })
         setListaObjetos(apiResponse);
+        setCarregando(false);
     };
 
     const editarObjeto = async (codigo) => {
@@ -102,7 +106,9 @@ const Usuarios = () => {
         }}>
             <h1>Usuários</h1>
             <Alerta alerta={alerta} />
-            <Tabela nomeContexto="UsuarioContext" />
+            <Carregando carregando={carregando}>
+                <Tabela nomeContexto="UsuarioContext" />
+            </Carregando>
             <Formulario />
         </UsuarioContext.Provider>
     )

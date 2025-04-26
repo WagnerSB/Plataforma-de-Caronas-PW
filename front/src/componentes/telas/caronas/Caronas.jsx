@@ -4,6 +4,7 @@ import CaronaContext from "./CaronaContext";
 import { getObjetosAPI, getObjetoPorCodigoAPI, adicionarObjetoAPI, deletarObjetoAPI } from '../../../servicos/BasicoServicos'
 import Formulario from "./Formulario";
 import Alerta from "../../../utils/Alerta";
+import Carregando from "../../../utils/Carregando"
 
 const Caronas = () => {
     const nomeObjeto = 'carona'
@@ -15,7 +16,8 @@ const Caronas = () => {
     const [listaObjetos, setListaObjetos] = useState([]);
     const [editar, setEditar] = useState(false);
     const [exibirForm, setExibirForm] = useState(false);
-    const [motoristas, setMotoristas] = useState([{codigo: 0, nomeMotorista:''}]);
+    const [motoristas, setMotoristas] = useState([{ codigo: 0, nomeMotorista: '' }]);
+    const [carregando, setCarregando] = useState(false);
 
     const formatDate = (date) => {
         const day = String(date.getDate()).padStart(2, '0');
@@ -59,8 +61,10 @@ const Caronas = () => {
     }
 
     const recuperarCaronas = async () => {
+        setCarregando(true);
         setMotoristas(await getObjetosAPI('motoristas'));
         setListaObjetos(await getObjetosAPI(nomeObjeto));
+        setCarregando(false);
     };
 
     const editarObjeto = async (codigo) => {
@@ -117,7 +121,9 @@ const Caronas = () => {
         }}>
             <h1>Caronas</h1>
             <Alerta alerta={alerta} />
-            <Tabela nomeContexto="CaronaContext" />
+            <Carregando carregando={carregando}>
+                <Tabela nomeContexto="CaronaContext" />
+            </Carregando>
             <Formulario />
         </CaronaContext.Provider>
     )

@@ -4,6 +4,7 @@ import AvaliacaoContext from './AvaliacaoContext'
 
 import { getObjetosAPI, getObjetoPorCodigoAPI, adicionarObjetoAPI, deletarObjetoAPI } from '../../../servicos/BasicoServicos'
 import Formulario from "./Formulario";
+import Carregando from "../../../utils/Carregando"
 
 const Avaliacoes = () => {
     const nomeObjeto = 'avaliacao'
@@ -17,6 +18,7 @@ const Avaliacoes = () => {
     const [exibirForm, setExibirForm] = useState(false);
     const [caronas, setCaronas] = useState([{ codigo: 0 }]);
     const [usuarios, setUsuarios] = useState([{ codigo: 0, nome: '' }])
+    const [carregando, setCarregando] = useState(false);
 
     const [objeto, setObjeto] = useState({
         'codigo': 0,
@@ -42,7 +44,9 @@ const Avaliacoes = () => {
     }
 
     const recuperarAvaliacoes = async () => {
+        setCarregando(true);
         setListaObjetos(await getObjetosAPI(nomeObjeto));
+        setCarregando(false);
     };
 
     const recuperarCaronas = async () => {
@@ -117,7 +121,9 @@ const Avaliacoes = () => {
             usuarios, caronas
         }}>
             <h1>Avaliações</h1>
-            <Tabela nomeContexto="AvaliacaoContext" />
+            <Carregando carregando={carregando}>
+                <Tabela nomeContexto="AvaliacaoContext" />
+            </Carregando>
             <Formulario />
         </AvaliacaoContext.Provider>
     )

@@ -4,6 +4,7 @@ import ReservaContext from './ReservaContext'
 
 import { getObjetosAPI, getObjetoPorCodigoAPI, adicionarObjetoAPI, deletarObjetoAPI } from '../../../servicos/BasicoServicos'
 import Formulario from "./Formulario";
+import Carregando from "../../../utils/Carregando"
 
 
 const Reservas = () => {
@@ -18,6 +19,7 @@ const Reservas = () => {
     const [exibirForm, setExibirForm] = useState(false);
     const [usuarios, setUsuarios] = useState([{ codigo: 0, nomeMotorista: '' }]);
     const [caronas, setCaronas] = useState([{ codigo: 0 }]);
+    const [carregando, setCarregando] = useState(false);
 
 
 
@@ -43,7 +45,9 @@ const Reservas = () => {
     }
 
     const recuperarReservas = async () => {
+        setCarregando(true);
         setListaObjetos(await getObjetosAPI(nomeObjeto));
+        setCarregando(false);
     };
 
     const recuperarCaronas = async () => {
@@ -117,7 +121,9 @@ const Reservas = () => {
             handleChange, novoObjeto, deletarObjeto, exibirForm, setExibirForm, usuarios, caronas
         }}>
             <h1>Reservas</h1>
-            <Tabela nomeContexto="ReservaContext" />
+            <Carregando carregando={carregando}>
+                <Tabela nomeContexto="ReservaContext" />
+            </Carregando>
             <Formulario />
         </ReservaContext.Provider>
     )
