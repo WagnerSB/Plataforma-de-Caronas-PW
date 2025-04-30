@@ -82,11 +82,25 @@ const Caronas = () => {
         }
     }
 
+    const formatarDataDB = (dateString) => {
+        const [day, month, yearAndTime] = dateString.split('/');
+        const [year, time] = yearAndTime.split(' ');
+        return `${year}-${month}-${day} ${time}`;
+    };
+    
+
     const cadastrarObjeto = async e => {
         e.preventDefault();
         const metodo = editar ? "PUT" : "POST";
+
+        const objetoFormatado = {
+            ...objeto,
+            horario: formatarDataDB(objeto.horario),
+            horario_chegada: formatarDataDB(objeto.horario_chegada),
+        };
+
         try {
-            const apiResult = await adicionarObjetoAPI(nomeObjeto, objeto, metodo);
+            const apiResult = await adicionarObjetoAPI(nomeObjeto, objetoFormatado, metodo);
             setAlerta({ status: apiResult.status, message: apiResult.message });
             if (apiResult.status === 'error')
                 return;
