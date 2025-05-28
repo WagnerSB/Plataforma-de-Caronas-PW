@@ -43,9 +43,14 @@ const Usuarios = () => {
     const recuperarUsuarios = async () => {
         setCarregando(true);
         let apiResponse = await getObjetosAPI(nomeObjeto);
-        apiResponse.forEach(obj => {
-            obj.is_motorista = obj.is_motorista ? 'Sim' : 'Não';
-        })
+        if (apiResponse.length > 0) {
+            apiResponse.forEach(obj => {
+                obj.is_motorista = obj.is_motorista ? 'Sim' : 'Não';
+            })
+        } else {
+            apiResponse = [];
+        }
+
         setListaObjetos(apiResponse);
         setCarregando(false);
     };

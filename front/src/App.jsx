@@ -10,11 +10,32 @@ import Usuarios from "./componentes/telas/usuarios/Usuarios";
 import Caronas from "./componentes/telas/caronas/Caronas";
 import Avaliacoes from "./componentes/telas/avaliacoes/Avaliacoes";
 import Reservas from "./componentes/telas/reservas/Reservas";
+import MenuPrivado from "./componentes/telas/MenuPrivado";
+import MenuPublico from "./componentes/telas/MenuPublico";
+import Login from "./componentes/telas/login/Login"
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Menu/>,
+    path : "/",
+    element : <MenuPublico/>,
+    children : [
+      {
+        index : true,
+        element : <Home/>
+      },
+      {
+        path : "sobre",
+        element : <Sobre/>
+      }	,  
+      {
+        path : "login",
+        element :  <Login/>
+      }              
+    ]
+  },
+  {
+    path: "/privado",
+    element: <MenuPrivado/>,
     children: [
       {
         index: true,

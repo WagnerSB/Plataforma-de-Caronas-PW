@@ -27,9 +27,9 @@ function Formulario() {
                     onchange={handleChange} readOnly={editar ? true : false}
                     msgvalido="Certo" msginvalido="Informe o motorista"
                     requerido={true}>
-                    {motoristas.map(motorista => (
+                    {motoristas.length>0 && (motoristas.map(motorista => (
                         <option key={motorista.codigo} value={motorista.codigo}>{motorista.nomeMotorista}</option>
-                    ))}
+                    )))}
                 </CampoSelect>
             </Col>
             <Col xs={12} md={12}>

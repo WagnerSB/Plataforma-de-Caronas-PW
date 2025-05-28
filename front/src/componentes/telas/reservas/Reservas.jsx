@@ -52,9 +52,14 @@ const Reservas = () => {
 
     const recuperarCaronas = async () => {
         const resultado = await getObjetosAPI('carona');
-        const codigos = resultado.map(carona => ({ codigo: carona.codigo }))
-            .sort((a, b) => a.codigo - b.codigo);
-        setCaronas(codigos);
+        if (resultado.length > 0) {
+            const codigos = resultado.map(carona => ({ codigo: carona.codigo }))
+                .sort((a, b) => a.codigo - b.codigo);
+            setCaronas(codigos);
+        } else {
+            setCaronas([]);
+        }
+        
     };
 
     const editarObjeto = async (codigo) => {
