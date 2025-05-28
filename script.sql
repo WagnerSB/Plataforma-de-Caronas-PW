@@ -3,8 +3,9 @@ create table usuarios (
    nome varchar(40) not null,
    telefone varchar(15) not null,
    email varchar(60) unique not null,
+   senha varchar(60) not null,
    is_motorista boolean not null default false,
-   constraint campos_nao_vazios check (trim(email) <> '' AND trim(telefone) <> '' and trim(nome) <> '' )
+   constraint campos_nao_vazios check (trim(email) <> '' AND trim(telefone) <> '' and trim(nome) <> '' AND trim(senha) <> '')
 );
 
 create type enum_status_carona as enum ('Cancelada', 'Concluída', 'Em andamento', 'Confirmada');
