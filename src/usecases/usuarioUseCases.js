@@ -14,11 +14,11 @@ const getUsuariosDB = async () => {
 
 const addUsuarioDB = async (body) => {
     try {
-        const { nome, telefone, email, is_motorista } = body;
-        const results = await pool.query(`INSERT INTO usuarios (nome, telefone, email, is_motorista) 
-            VALUES ($1, $2, $3, $4)
+        const { nome, telefone, email, is_motorista, senha } = body;
+        const results = await pool.query(`INSERT INTO usuarios (nome, telefone, email, is_motorista, senha) 
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING codigo, nome, telefone, email, is_motorista`,
-            [nome, telefone, email, is_motorista]);
+            [nome, telefone, email, is_motorista, senha]);
         const usuario = results.rows[0];
         return new Usuario(usuario.codigo, usuario.nome, usuario.telefone, usuario.email, usuario.is_motorista);
     } catch (err) {
@@ -28,7 +28,7 @@ const addUsuarioDB = async (body) => {
 
 const updateUsuarioDB = async (body) => {
     try {
-        const { codigo, nome, telefone, email, is_motorista } = body;
+        const { codigo, nome, telefone, email, is_motorista, senha } = body;
 
         if (is_motorista == false) {
             const motoristaCheck = await pool.query(`SELECT 1 FROM caronas WHERE codigo_motorista = $1 LIMIT 1`, [codigo]);
@@ -39,10 +39,10 @@ const updateUsuarioDB = async (body) => {
         }
         
         results = await pool.query(`UPDATE usuarios SET nome = $1,
-            telefone = $2, email = $3, is_motorista = $4
-            WHERE codigo = $5
+            telefone = $2, email = $3, is_motorista = $4, senha = $5
+            WHERE codigo = $6
             RETURNING codigo, nome, telefone, email, is_motorista`,
-            [nome, telefone, email, is_motorista, codigo]
+            [nome, telefone, email, is_motorista, senha, codigo]
         );
         const usuario = results.rows[0];
         return new Usuario(usuario.codigo, usuario.nome, usuario.telefone, usuario.email, usuario.is_motorista);
