@@ -14,6 +14,7 @@ import MenuPrivado from "./componentes/telas/MenuPrivado";
 import MenuPublico from "./componentes/telas/MenuPublico";
 import Login from "./componentes/telas/login/Login"
 import Registro from "./componentes/telas/login/Registro"
+import Perfil from "./componentes/telas/usuarios/Perfil";
 
 const router = createBrowserRouter([
   {
@@ -50,10 +51,10 @@ const router = createBrowserRouter([
         path: "sobre",
         element: <Sobre/>
       },
-      {
-        path: "usuarios",
-        element: <Usuarios/>
-      },
+      // {
+      //   path: "usuarios",
+      //   element: <Usuarios/>
+      // },
       {
         path: "caronas",
         element: <Caronas/>
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "reservas",
         element: <Reservas/>
+      },
+      {
+        path: "perfil",
+        element: <Perfil/>
       }
     ]
   }

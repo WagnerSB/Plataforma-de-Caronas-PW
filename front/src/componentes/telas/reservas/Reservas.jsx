@@ -4,7 +4,8 @@ import ReservaContext from './ReservaContext'
 
 import { getObjetosAPI, getObjetoPorCodigoAPI, adicionarObjetoAPI, deletarObjetoAPI } from '../../../servicos/BasicoServicos'
 import Formulario from "./Formulario";
-import Carregando from "../../../utils/Carregando"
+import Carregando from "../../../utils/Carregando";
+import WithAuth from '../../../seguranca/WithAuth';
 
 
 const Reservas = () => {
@@ -59,7 +60,7 @@ const Reservas = () => {
         } else {
             setCaronas([]);
         }
-        
+
     };
 
     const editarObjeto = async (codigo) => {
@@ -134,4 +135,4 @@ const Reservas = () => {
     )
 }
 
-export default Reservas;
+export default WithAuth(Reservas);

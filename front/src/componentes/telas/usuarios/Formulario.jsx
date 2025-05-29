@@ -49,9 +49,6 @@ function Formulario() {
                     tipo="checkbox" onchange={handleChange}
                     readonly={false}/>
             </Col>
-
-
-
         </ModalDialogo>
     )
 

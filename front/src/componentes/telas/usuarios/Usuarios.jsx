@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import Tabela from "../../../utils/Tabela";
-import UsuarioContext from './UsuarioContext'
+import UsuarioContext from './UsuarioContext';
 
 import { getObjetosAPI, getObjetoPorCodigoAPI, adicionarObjetoAPI, deletarObjetoAPI } from '../../../servicos/BasicoServicos'
 import Formulario from "./Formulario";
 import Alerta from "../../../utils/Alerta";
-import Carregando from "../../../utils/Carregando"
+import Carregando from "../../../utils/Carregando";
+import WithAuth from '../../../seguranca/WithAuth';
 
 const Usuarios = () => {
     const nomeObjeto = 'usuario'
@@ -93,7 +94,6 @@ const Usuarios = () => {
         const name = e.target.name;
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         setObjeto({ ...objeto, [name]: value });
-
     };
 
 
@@ -119,4 +119,4 @@ const Usuarios = () => {
     )
 }
 
-export default Usuarios;
+export default WithAuth(Usuarios);

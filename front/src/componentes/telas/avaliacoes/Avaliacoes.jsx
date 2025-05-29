@@ -4,7 +4,8 @@ import AvaliacaoContext from './AvaliacaoContext'
 
 import { getObjetosAPI, getObjetoPorCodigoAPI, adicionarObjetoAPI, deletarObjetoAPI } from '../../../servicos/BasicoServicos'
 import Formulario from "./Formulario";
-import Carregando from "../../../utils/Carregando"
+import Carregando from "../../../utils/Carregando";
+import WithAuth from '../../../seguranca/WithAuth';
 
 const Avaliacoes = () => {
     const nomeObjeto = 'avaliacao'
@@ -133,4 +134,4 @@ const Avaliacoes = () => {
     )
 }
 
-export default Avaliacoes;
+export default WithAuth(Avaliacoes);

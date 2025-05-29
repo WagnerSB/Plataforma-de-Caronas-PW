@@ -22,7 +22,9 @@ function MenuPrivado() {
                                 to="/privado">Home</NavLink>
                             {usuario &&
                                 <NavDropdown title="Manutenções" id="basic-nav-dropdown">
-                                    <NavLink className="dropdown-item" exact="true" to="usuarios">Usuários</NavLink>
+                                    {/* { usuario.type == "admin" && */}
+                                    {/* <NavLink className="dropdown-item" exact="true" to="usuarios">Usuários</NavLink> */}
+                                    {/* } */}
                                     <NavLink className="dropdown-item" exact="true" to="caronas">Caronas</NavLink>
                                     <NavLink className="dropdown-item" exact="true" to="avaliacoes">Avaliações</NavLink>
                                     <NavLink className="dropdown-item" exact="true" to="reservas">Reservas</NavLink>
@@ -33,13 +35,17 @@ function MenuPrivado() {
                         </Nav>
                     </Navbar.Collapse>
                     <Navbar.Collapse className="justify-content-end">
-                        <NavDropdown title={usuario ? "Usuário: " + usuario.nome : "Usuário"} id="basic-nav-dropdown">
-                            {usuario ?
-                                <NavLink className="dropdown-item" exact="true"
-                                    to="/" onClick={() => logout()}>Logout</NavLink>
+                        <NavDropdown title={usuario ? usuario.nome : "Usuário"} id="basic-nav-dropdown">
+                            {usuario ? (
+                                <>
+                                    <NavLink className="dropdown-item" exact="true" to="/privado/perfil">Perfil</NavLink>
+                                    <NavLink className="dropdown-item" exact="true"
+                                        to="/" onClick={() => logout()}>Logout</NavLink>
+                                </>
+                            )
                                 :
-                                <NavLink className="dropdown-item" exact="true"
-                                    to="/login">login</NavLink>
+                                (<NavLink className="dropdown-item" exact="true"
+                                    to="/login">login</NavLink>)
                             }
                         </NavDropdown>
                     </Navbar.Collapse>

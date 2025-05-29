@@ -38,6 +38,18 @@ function Login() {
                 body: JSON.stringify(body),
             }).then(response => response.json())
                 .then(setAutenticado(true));
+            
+            await fetch(`${process.env.REACT_APP_API_URL}/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({email: body.email, senha: body.senha}),
+            }).then(response => response.json())
+                .then(json => {
+                    if (json.auth === true) {
+                        gravaAutenticacao(json);
+                    }
+                });
+
         } catch (err) {
             console.error(err.message);
             setAlerta({ status: "error", message: err.message })
@@ -58,7 +70,7 @@ function Login() {
     }, []);
 
     if (autenticado === true) {
-        return <Navigate to="/login" />
+        return <Navigate to="/privado" />
     }
 
     return (
@@ -100,7 +112,6 @@ function Login() {
                                 requerido={true}>
                                 <option key={"nao"} value={false}>{"Não"}</option>
                                 <option key={"sim"} value={true}>{"Sim"}</option>
-
                             </CampoSelect>
                             <button className="w-100 btn btn-lg btn-primary" type="submit">Criar conta</button>
                         </form>

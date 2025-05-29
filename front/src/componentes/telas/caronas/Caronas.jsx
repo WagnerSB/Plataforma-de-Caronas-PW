@@ -4,7 +4,8 @@ import CaronaContext from "./CaronaContext";
 import { getObjetosAPI, getObjetoPorCodigoAPI, adicionarObjetoAPI, deletarObjetoAPI } from '../../../servicos/BasicoServicos'
 import Formulario from "./Formulario";
 import Alerta from "../../../utils/Alerta";
-import Carregando from "../../../utils/Carregando"
+import Carregando from "../../../utils/Carregando";
+import WithAuth from '../../../seguranca/WithAuth';
 
 const Caronas = () => {
     const nomeObjeto = 'carona'
@@ -143,4 +144,4 @@ const Caronas = () => {
     )
 }
 
-export default Caronas;
+export default WithAuth(Caronas);
