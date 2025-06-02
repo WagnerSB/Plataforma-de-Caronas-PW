@@ -5,15 +5,15 @@ const NOMEAPP = 'plataformacaronaspw';
 export const getToken = () => {
     const localStorageAutenticacao = localStorage.getItem(NOMEAPP + '/autenticacao');
     const autenticacao = localStorageAutenticacao ?
-    JSON.parse(localStorageAutenticacao) : null;
-    if (autenticacao === null){
+        JSON.parse(localStorageAutenticacao) : null;
+    if (autenticacao === null) {
         return null;
     }
     if (autenticacao.auth === false) {
         return null;
     } else {
         let decoded = jwtDecode(autenticacao.token);
-        if (decoded.exp <= Math.floor(new Date() / 1000)){
+        if (decoded.exp <= Math.floor(new Date() / 1000)) {
             console.log('Token expirado');
             logout();
             throw "Token expirado";
@@ -26,15 +26,15 @@ export const getToken = () => {
 export const getUsuario = () => {
     const localStorageAutenticacao = localStorage.getItem(NOMEAPP + '/autenticacao');
     const autenticacao = localStorageAutenticacao ?
-    JSON.parse(localStorageAutenticacao) : null;
-    if (autenticacao === null){
+        JSON.parse(localStorageAutenticacao) : null;
+    if (autenticacao === null) {
         return null;
     }
     if (autenticacao.auth === false) {
         return null;
     } else {
         let decoded = jwtDecode(autenticacao.token);
-        if (decoded.exp <= Math.floor(new Date() / 1000)){
+        if (decoded.exp <= Math.floor(new Date() / 1000)) {
             console.log('Token expirado');
             logout();
             throw "Token expirado";
@@ -44,12 +44,33 @@ export const getUsuario = () => {
     }
 }
 
+export const getTipoUsuario = () => {
+    const localStorageAutenticacao = localStorage.getItem(NOMEAPP + '/autenticacao');
+    const autenticacao = localStorageAutenticacao ?
+        JSON.parse(localStorageAutenticacao) : null;
+    if (autenticacao === null) {
+        return null;
+    }
+    if (autenticacao.auth === false) {
+        return null;
+    } else {
+        let decoded = jwtDecode(autenticacao.token);
+        if (decoded.exp <= Math.floor(new Date() / 1000)) {
+            console.log('Token expirado');
+            logout();
+            throw "Token expirado";
+        } else {
+            return decoded.usuario.tipo;
+        }
+    }
+}
+
 export const gravaAutenticacao = (json) => {
-    localStorage.setItem(NOMEAPP+'/autenticacao',JSON.stringify(json));
+    localStorage.setItem(NOMEAPP + '/autenticacao', JSON.stringify(json));
 }
 
 export const logout = () => {
-    localStorage.setItem(NOMEAPP+'/autenticacao',JSON.stringify({
-        "auth" : false , "token" : ''
+    localStorage.setItem(NOMEAPP + '/autenticacao', JSON.stringify({
+        "auth": false, "token": ''
     }));
 }

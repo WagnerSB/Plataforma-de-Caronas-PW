@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
 import ContextMap from './ContextMap'
+import { getTipoUsuario } from '../seguranca/Autenticacao';
 
 
 function Tabela({ nomeContexto }) {
@@ -33,11 +34,13 @@ function Tabela({ nomeContexto }) {
                                             <i className="bi bi-pencil-square"></i>
                                             Editar
                                         </Button>
-                                        <Button variant="danger"
-                                            onClick={() => { deletarObjeto(objeto.codigo); }}>
-                                            <i className="bi bi-trash"></i>
-                                            Deletar
-                                        </Button>
+                                        {getTipoUsuario() === 'A' &&
+                                            <Button variant="danger"
+                                                onClick={() => { deletarObjeto(objeto.codigo); }}>
+                                                <i className="bi bi-trash"></i>
+                                                Deletar
+                                            </Button>
+                                        }
                                     </td>
                                     {objectHeaders.map((objHeader, index) => (
                                         <td style={{ maxWidth: '500px', wordWrap: 'break-word' }} key={index}>{objeto[objHeader.toLowerCase()]}</td>

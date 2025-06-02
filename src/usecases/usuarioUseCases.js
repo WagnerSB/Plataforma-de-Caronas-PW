@@ -6,7 +6,7 @@ const getUsuariosDB = async () => {
     try {
         const { rows } = await pool.query('SELECT * from usuarios ORDER BY nome');
         return rows.map((usuario) => new Usuario(usuario.codigo, usuario.nome, usuario.telefone,
-            usuario.email, usuario.is_motorista));
+            usuario.email, usuario.is_motorista, usuario.tipo));
     } catch (err) {
         throw err;
     };
@@ -17,10 +17,10 @@ const addUsuarioDB = async (body) => {
         const { nome, telefone, email, is_motorista, senha } = body;
         const results = await pool.query(`INSERT INTO usuarios (nome, telefone, email, is_motorista, senha) 
             VALUES ($1, $2, $3, $4, $5)
-            RETURNING codigo, nome, telefone, email, is_motorista`,
+            RETURNING codigo, nome, telefone, email, is_motorista, tipo`,
             [nome, telefone, email, is_motorista, senha]);
         const usuario = results.rows[0];
-        return new Usuario(usuario.codigo, usuario.nome, usuario.telefone, usuario.email, usuario.is_motorista);
+        return new Usuario(usuario.codigo, usuario.nome, usuario.telefone, usuario.email, usuario.is_motorista, usuario.tipo);
     } catch (err) {
         throw `Erro ao adicionar usuário: ${err}`;
     }
@@ -33,19 +33,19 @@ const updateUsuarioDB = async (body) => {
         if (is_motorista == false) {
             const motoristaCheck = await pool.query(`SELECT 1 FROM caronas WHERE codigo_motorista = $1 LIMIT 1`, [codigo]);
 
-            if (motoristaCheck.rowCount > 0) 
+            if (motoristaCheck.rowCount > 0)
                 throw new Error(`Não é possível remover o status de motorista. O usuário já foi motorista de uma carona.`);
 
         }
-        
+
         results = await pool.query(`UPDATE usuarios SET nome = $1,
             telefone = $2, email = $3, is_motorista = $4, senha = $5
             WHERE codigo = $6
-            RETURNING codigo, nome, telefone, email, is_motorista`,
+            RETURNING codigo, nome, telefone, email, is_motorista, tipo`,
             [nome, telefone, email, is_motorista, senha, codigo]
         );
         const usuario = results.rows[0];
-        return new Usuario(usuario.codigo, usuario.nome, usuario.telefone, usuario.email, usuario.is_motorista);
+        return new Usuario(usuario.codigo, usuario.nome, usuario.telefone, usuario.email, usuario.is_motorista, usuario.tipo);
     } catch (err) {
         throw `Erro ao atualizar usuário: ${err}`;
     }
@@ -57,7 +57,7 @@ const getUsuarioPorCodigoDB = async (codigo) => {
         throw `Nenhum usuário encontrado com o código: ${codigo}`;
     } else {
         const usuario = results.rows[0];
-        return new Usuario(usuario.codigo, usuario.nome, usuario.telefone, usuario.email, usuario.is_motorista);
+        return new Usuario(usuario.codigo, usuario.nome, usuario.telefone, usuario.email, usuario.is_motorista, usuario.tipo);
     }
 }
 

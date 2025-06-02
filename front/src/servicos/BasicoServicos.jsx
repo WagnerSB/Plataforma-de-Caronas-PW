@@ -1,4 +1,4 @@
-import { getToken } from '../seguranca/Autenticacao';
+import { getToken, getTipoUsuario } from '../seguranca/Autenticacao';
 
 export const getObjetosAPI = async (nomeObjeto) => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/${nomeObjeto}`,
@@ -30,6 +30,13 @@ export const getObjetoPorCodigoAPI = async (nomeObjeto, codigo) => {
 }
 
 export const deletarObjetoAPI = async (nomeObjeto, codigo) => {
+    if (getTipoUsuario() !== 'A') {
+        return {
+            staus: 'error',
+            message: 'Tipo de usúario inválido, necessita ser administrador para poder excluir'
+        }
+    }
+
     const response = await fetch(`${process.env.REACT_APP_API_URL}/${nomeObjeto}/${codigo}`,
         {
             method: 'DELETE',
