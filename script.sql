@@ -5,6 +5,7 @@ create table usuarios (
    email varchar(60) unique not null,
    senha varchar(60) not null,
    is_motorista boolean not null default false,
+   tipo char(1) NOT NULL CHECK (tipo IN ('A', 'U')),
    constraint campos_nao_vazios check (trim(email) <> '' AND trim(telefone) <> '' and trim(nome) <> '' AND trim(senha) <> '')
 );
 

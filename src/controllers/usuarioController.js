@@ -26,6 +26,15 @@ const addUsuario = async (request, response) => {
 }
 
 const updateUsuario = async (request, response) => {
+    const codigoRequisicao = request.usuario.codigo;
+    const codigo = request.body.codigo
+    if (codigo != codigoRequisicao) {
+        response.status(403).json({
+                status: 'error',
+                message: `Atualizar usuário com outro código, tentativa comprometendo segurança.`
+            })
+        return;
+    }
     await updateUsuarioDB(request.body)
         .then(data => response.status(200).json({
             status: 'success',
@@ -41,7 +50,16 @@ const updateUsuario = async (request, response) => {
 }
 
 const getUsuarioPorCodigo = async (request, response) => {
-    await getUsuarioPorCodigoDB(request.params.codigo)
+    const codigoRequisicao = request.usuario.codigo;
+    const codigo = request.params.codigo
+    if (codigo != codigoRequisicao) {
+        response.status(403).json({
+                status: 'error',
+                message: `Busca por usuário com outro código, tentativa comprometendo segurança.`
+            })
+        return;
+    }
+    await getUsuarioPorCodigoDB(codigo)
         .then(data => response.status(200).json(data))
         .catch(err =>
             response.status(400).json({
