@@ -53,11 +53,12 @@ create table reservas (
 
 -- inserindo registros
 -- usuarios 
-insert into usuarios (nome, telefone, email, is_motorista)
+insert into usuarios (nome, telefone, email, is_motorista, senha, tipo)
 values
-('João da Silva', '55987654321', 'joaodasilva@gmail.com', false),
-('Maria Oliveira', '54988765432', 'mariaoliveira@gmail.com', false),
-('Carlos Souza', '54999876543', 'carlossouza86@gmail.com', true);
+('João da Silva', '55987654321', 'joaodasilva@gmail.com', false, '12345', 'U'),
+('Maria Oliveira', '54988765432', 'mariaoliveira@gmail.com', false, '12345', 'U'),
+('Carlos Souza', '54999876543', 'carlossouza86@gmail.com', true, '12345', 'U'),
+('Uma Pessoa', '54999876544', 'a@a', true, 'a', 'A');
 
 -- caronas
 insert into caronas (codigo_motorista, origem, destino, horario, horario_chegada, vagas, vagas_ocupadas, status_carona)
