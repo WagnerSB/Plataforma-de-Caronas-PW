@@ -28,7 +28,7 @@ const addUsuarioDB = async (body) => {
 
 const updateUsuarioDB = async (body) => {
     try {
-        const { codigo, nome, telefone, email, is_motorista, senha } = body;
+        const { codigo, nome, telefone, email, is_motorista, senha, tipo } = body;
 
         if (is_motorista == false) {
             const motoristaCheck = await pool.query(`SELECT 1 FROM caronas WHERE codigo_motorista = $1 LIMIT 1`, [codigo]);
@@ -38,12 +38,23 @@ const updateUsuarioDB = async (body) => {
 
         }
 
-        results = await pool.query(`UPDATE usuarios SET nome = $1,
-            telefone = $2, email = $3, is_motorista = $4, senha = $5
-            WHERE codigo = $6
-            RETURNING codigo, nome, telefone, email, is_motorista, tipo`,
-            [nome, telefone, email, is_motorista, senha, codigo]
-        );
+        // Verifica se foi passado o tipo do user
+        let query, params;
+        if (tipo !== undefined) {
+            query = `UPDATE usuarios 
+                     SET nome = $1, telefone = $2, email = $3, is_motorista = $4, senha = $5, tipo = $6 
+                     WHERE codigo = $7 
+                     RETURNING codigo, nome, telefone, email, is_motorista, tipo`;
+            params = [nome, telefone, email, is_motorista, senha, tipo, codigo];
+        } else {
+            query = `UPDATE usuarios 
+                     SET nome = $1, telefone = $2, email = $3, is_motorista = $4, senha = $5 
+                     WHERE codigo = $6 
+                     RETURNING codigo, nome, telefone, email, is_motorista, tipo`;
+            params = [nome, telefone, email, is_motorista, senha, codigo];
+        }
+
+        results = await pool.query(query, params);
         const usuario = results.rows[0];
         return new Usuario(usuario.codigo, usuario.nome, usuario.telefone, usuario.email, usuario.is_motorista, usuario.tipo);
     } catch (err) {
